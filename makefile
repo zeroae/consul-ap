@@ -7,10 +7,10 @@ TAG?=latest
 
 # run the Docker build
 build:
-	docker build -t="autopilotpattern/consul:${TAG}" .
+	docker build -t="zeroae/consul:${TAG}" .
 
 # push our image to the public registry
 ship:
-	docker tag autopilotpattern/consul:${TAG} autopilotpattern/consul:latest
-	docker push "autopilotpattern/consul:${TAG}"
-	docker push "autopilotpattern/consul:latest"
+	docker tag zeroae/consul:${TAG} zeroae/consul:latest
+	docker push "zeroae/consul:${TAG}"
+	docker push "zeroae/consul:latest"

@@ -8,10 +8,12 @@ RUN apk --no-cache \
         ca-certificates
 
 # The Consul binary
-ENV CONSUL_VERSION=0.7.2
-RUN export CONSUL_CHECKSUM=aa97f4e5a552d986b2a36d48fdc3a4a909463e7de5f726f3c5a89b8a1be74a58 \
-    && export archive=consul_${CONSUL_VERSION}_linux_amd64.zip \
-    && curl -Lso /tmp/${archive} https://releases.hashicorp.com/consul/${CONSUL_VERSION}/${archive} \
+ENV CONSUL_VERSION=0.7.3-rfc2782                                                        \
+    CONSUL_URL_BASE=https://github.com/zeroae/consul/releases/download                  \
+    CONSUL_CHECKSUM=9c13de0de9697fc646899cbf58d39d13b061c803c2d306c321281246890d1576    \
+    CONSUL_UI_CHECKSUM=dfdc79391dafb72aefa6c1e114b242a1c4385ccb066f9cfa60001f741f0014e6
+RUN export archive=consul_${CONSUL_VERSION}_linux_amd64.zip \
+    && curl -Lso /tmp/${archive} ${CONSUL_URL_BASE}/v${CONSUL_VERSION}/${archive} \
     && echo "${CONSUL_CHECKSUM}  /tmp/${archive}" | sha256sum -c \
     && cd /bin \
     && unzip /tmp/${archive} \
@@ -19,9 +21,8 @@ RUN export CONSUL_CHECKSUM=aa97f4e5a552d986b2a36d48fdc3a4a909463e7de5f726f3c5a89
     && rm /tmp/${archive}
 
 # The Consul web UI
-RUN export CONSUL_UI_CHECKSUM=c9d2a6e1d1bb6243e5fd23338d92f5c71cdf0a4077f7fcc95fd81800fa1f42a9 \
-    && export archive=consul_${CONSUL_VERSION}_web_ui.zip \
-    && curl -Lso /tmp/${archive} https://releases.hashicorp.com/consul/${CONSUL_VERSION}/${archive} \
+RUN export archive=consul_${CONSUL_VERSION}_web_ui.zip \
+    && curl -Lso /tmp/${archive} ${CONSUL_URL_BASE}/v${CONSUL_VERSION}/${archive} \
     && echo "${CONSUL_UI_CHECKSUM}  /tmp/${archive}" | sha256sum -c \
     && mkdir /ui \
     && cd /ui \
